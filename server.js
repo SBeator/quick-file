@@ -3,6 +3,9 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
+const PORT = 3000;
+const FILE_ROOT_PATH = './files/';
+
 const app = express();
 
 app.use(bodyParser.text({ type: 'text/plain' }));
@@ -17,6 +20,24 @@ function getUniqueFilename(filename) {
 function getFilePath(filename) {
   return `./files/${filename}`;
 }
+
+app.get('/filelist', function(req, res) {
+  fs.readdir(FILE_ROOT_PATH, function(err, items) {
+    if (err) return res.status(500).send(err);
+
+    res.send(
+      items.filter(item => !/(^|\/)\.[^\/\.]/g.test(item)).map(item => ({
+        filename: item,
+      }))
+    );
+  });
+});
+
+app.get('/download/:filename', function(req, res) {
+  const filePath = getFilePath(req.params.filename);
+  console.log(filePath);
+  res.download(filePath);
+});
 
 app.post('/upload', function(req, res) {
   if (!req.files) return res.status(400).send('No files were uploaded.');
@@ -44,4 +65,4 @@ app.delete('/upload', function(req, res) {
 
 app.use(express.static('public'));
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(PORT, () => console.log(`Server host on http://localhost:${PORT}!`));
