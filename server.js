@@ -34,9 +34,7 @@ app.get('/filelist', function(req, res) {
 });
 
 app.get('/download/:filename', function(req, res) {
-  const filePath = getFilePath(req.params.filename);
-  console.log(filePath);
-  res.download(filePath);
+  res.download(getFilePath(req.params.filename));
 });
 
 app.post('/upload', function(req, res) {
