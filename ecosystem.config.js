@@ -27,7 +27,7 @@ module.exports = {
       key: '~/.ssh/AWS.pem',
       ref: 'origin/master',
       repo: 'git@github.com:SBeator/quick-file.git',
-      path: '/var/www/production',
+      path: '/var/www/quick-file',
       'post-deploy':
         'yarn install && pm2 reload ecosystem.config.js --env production',
     },
@@ -36,7 +36,7 @@ module.exports = {
       host: 'localhost',
       ref: 'origin/master',
       repo: 'git@github.com:SBeator/quick-file.git',
-      path: '/var/www/production',
+      path: '/var/www/quick-file',
       'post-deploy':
         'yarn install && pm2 reload ecosystem.config.js --env production',
     },
