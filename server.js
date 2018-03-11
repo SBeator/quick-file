@@ -3,9 +3,9 @@ const fileUpload = require('express-fileupload');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 
-const fileRouter = require('./file');
+const fileRouter = require('./files');
 
-const PORT = 3000;
+const PORT = 3030;
 
 const app = express();
 
