@@ -6,6 +6,10 @@ const path = require('path');
 
 const FILE_ROOT_PATH = './files/';
 
+if (!path.existsSync(FILE_ROOT_PATH)) {
+  fs.mkdirSync(FILE_ROOT_PATH, 0744);
+}
+
 function getUniqueFilename(filename) {
   return filename;
 }
@@ -43,7 +47,6 @@ router.post('/login', function(req, res) {
     setAuth(req, true);
     res.redirect(req.originalUrl.replace('/login', ''));
   } else {
-    console.log(req);
     res.redirect(req.originalUrl);
   }
 });
