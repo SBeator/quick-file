@@ -6,7 +6,7 @@ const path = require('path');
 
 const FILE_ROOT_PATH = './files/';
 
-if (!path.existsSync(FILE_ROOT_PATH)) {
+if (!fs.existsSync(FILE_ROOT_PATH)) {
   fs.mkdirSync(FILE_ROOT_PATH, 0744);
 }
 
