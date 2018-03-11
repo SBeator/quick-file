@@ -3,7 +3,7 @@
 
 <head>
   <title>FilePond from CDN</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Filepond stylesheet -->
   <link href="./resources/filepond.css" rel="stylesheet">
   <style>
@@ -12,15 +12,25 @@
       padding: 10px 0;
     }
 
-    .download-files li a {
+    .download-files li {
       color: white;
-      text-decoration: none;
       background-color: #369763;
       margin: 10px 0;
       display: block;
       padding: 10px;
       list-style: none;
       border-radius: 5px;
+    }
+
+    .download-files li a {
+      color: white;
+      float: right;
+      text-decoration: none;
+      padding: 5px 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 3px;
+      margin-top: -5px;
+      margin-left: 10px;
     }
   </style>
 
@@ -44,27 +54,45 @@
     });
     FilePond.parse(document.body);
 
-    const pond = document.querySelector('.filepond');
-    pond.addEventListener('FilePond:addfile', e => {
-      console.log('File added', e.detail);
-    });
+    let currentFileList = [];
 
     function refreshFileList() {
       fetch('./filelist').then(response => response.json()).then(json => {
-        const lis = json.map(data =>
-          `
+        if (currentFileList.length != json.length) {
+          currentFileList = json;
+
+          const lis = json.map(data =>
+            `
           <li>
-            <a href="./download/${data.filename}">${data.filename}</a>
+            <span>${data.filename}</span>
+            <a class="delete" data-file="${data.filename}" href="javascript:void(0)">Delete</a>
+            <a href="./download/${data.filename}">Download</a>
           </li>
         `
-        ).join(' ');
+          ).join(' ');
 
-        const ul = document.querySelector('.download-files');
-        ul.innerHTML = lis;
+          const ul = document.querySelector('.download-files');
+          ul.innerHTML = lis;
+        }
       })
     }
 
+    const pond = document.querySelector('.filepond');
+    pond.addEventListener('FilePond:addfile', refreshFileList);
+    pond.addEventListener('FilePond:removefile', refreshFileList);
+
+    document.querySelector('.download-files').addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.classList.contains('delete')) {
+        fetch('/upload', {
+          method: 'DELETE',
+          body: target.dataset.file
+        }).then(refreshFileList)
+      }
+    })
+
     refreshFileList();
+    setInterval(refreshFileList, 1000);
   </script>
 
 </body>
