@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./server.js",
     "deploy": "pm2 deploy production",
-    "local-deploy": "pm2 deploy local-deploy"
+    "local-deploy": "yarn install"
   },
   "keywords": [],
   "author": "",
