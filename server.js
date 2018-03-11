@@ -20,6 +20,6 @@ app.use(
   })
 );
 
-app.use('/file', fileRouter);
+app.use('/files', fileRouter);
 
 app.listen(PORT, () => console.log(`Server host on http://localhost:${PORT}!`));
