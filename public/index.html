@@ -4,7 +4,6 @@
 <head>
   <title>FilePond from CDN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Filepond stylesheet -->
   <link href="./resources/filepond.css" rel="stylesheet">
   <style>
     .download-files {
@@ -57,7 +56,9 @@
     let currentFileList = [];
 
     function refreshFileList() {
-      fetch('./filelist').then(response => response.json()).then(json => {
+      fetch('./filelist', {
+        credentials: "same-origin"
+      }).then(response => response.json()).then(json => {
         if (currentFileList.length != json.length) {
           currentFileList = json;
 
@@ -84,8 +85,9 @@
     document.querySelector('.download-files').addEventListener('click', (event) => {
       const target = event.target;
       if (target.classList.contains('delete')) {
-        fetch('/upload', {
+        fetch('./upload', {
           method: 'DELETE',
+          credentials: "same-origin",
           body: target.dataset.file
         }).then(refreshFileList)
       }
