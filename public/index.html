@@ -54,6 +54,8 @@
     FilePond.parse(document.body);
 
     let currentFileList = [];
+    let count = 0;
+    let interval = 0;
 
     function refreshFileList() {
       fetch('./filelist', {
@@ -79,8 +81,8 @@
     }
 
     const pond = document.querySelector('.filepond');
-    pond.addEventListener('FilePond:addfile', refreshFileList);
-    pond.addEventListener('FilePond:removefile', refreshFileList);
+    pond.addEventListener('FilePond:addfile', startRefreshFileList);
+    pond.addEventListener('FilePond:removefile', startRefreshFileList);
 
     document.querySelector('.download-files').addEventListener('click', (event) => {
       const target = event.target;
@@ -94,7 +96,23 @@
     })
 
     refreshFileList();
-    setInterval(refreshFileList, 1000);
+    startRefreshFileList();
+
+    function startRefreshFileList() {
+      count = 0;
+      if (!interval) {
+        interval = setInterval(() => {
+          if (count < 10) {
+            refreshFileList();
+          } else {
+            clearInterval(interval);
+            interval = 0;
+          }
+
+          count++;
+        }, 1000);
+      }
+    }
   </script>
 
 </body>
