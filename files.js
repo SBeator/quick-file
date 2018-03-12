@@ -10,6 +10,22 @@ if (!fs.existsSync(FILE_ROOT_PATH)) {
   fs.mkdirSync(FILE_ROOT_PATH, 0744);
 }
 
+// Use very simple way to manage access
+// before run server, we need to put the password into the file /apps/password
+let password;
+fs.readFile('/apps/password', 'utf8', function(err, data) {
+  if (err) {
+    // Set a default password for local
+    password = 'admin';
+  } else {
+    password = data;
+  }
+});
+
+function loginSuccess(req) {
+  return req.body.password === password;
+}
+
 function getUniqueFilename(filename) {
   return filename;
 }
@@ -24,10 +40,6 @@ function isAuth(req) {
 
 function setAuth(req, auth) {
   req.session.auth = true;
-}
-
-function loginSuccess(req) {
-  return req.body.password === 'xingxin';
 }
 
 router.get('/', function(req, res, next) {
