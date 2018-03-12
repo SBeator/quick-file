@@ -18,7 +18,7 @@ fs.readFile('/apps/password', 'utf8', function(err, data) {
     // Set a default password for local
     password = 'admin';
   } else {
-    password = data;
+    password = data.replace(/[\n\r]/g, '');
   }
 });
 
