@@ -5,7 +5,7 @@ module.exports = {
    */
   apps: [
     {
-      name: 'quick-file2',
+      name: 'quick-file',
       script: './server.js',
       env: {
         COMMON_VARIABLE: 'true',
