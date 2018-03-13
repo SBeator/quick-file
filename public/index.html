@@ -31,6 +31,10 @@
       margin-top: -5px;
       margin-left: 10px;
     }
+
+    .hide {
+      display: none;
+    }
   </style>
 
 </head>
@@ -38,7 +42,7 @@
 <body>
 
   <!-- We'll transform this input into a pond -->
-  <input type="file" class="filepond" data-max-files="10" multiple>
+  <input type="file" class="filepond hide" data-max-files="10" multiple>
 
   <ul class="download-files">
   </ul>
@@ -52,6 +56,8 @@
       server: './upload/',
     });
     FilePond.parse(document.body);
+
+
 
     let currentFileList = [];
     let count = 0;
@@ -83,6 +89,7 @@
     const pond = document.querySelector('.filepond');
     pond.addEventListener('FilePond:addfile', startRefreshFileList);
     pond.addEventListener('FilePond:removefile', startRefreshFileList);
+    pond.classList.remove('hide');
 
     document.querySelector('.download-files').addEventListener('click', (event) => {
       const target = event.target;
